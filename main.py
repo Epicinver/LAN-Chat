@@ -15,7 +15,7 @@ BROADCAST_IP = "255.255.255.255"
 username = input("Enter your name: ")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # ✅ allow reuse
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 sock.bind(("", PORT))
 
@@ -31,14 +31,15 @@ def listen():
 
 threading.Thread(target=listen, daemon=True).start()
 
-print(f"🌐 Connected to LAN Chat ({PORT}) — everyone on the network can see messages.")
+print(f"Connected to LAN Chat ({PORT}). Note: everyone on the network can see messages.")
 print("Type 'exitquitplzohio' to quit.\n")
 
 while True:
     msg = input("> ")
     if msg.lower() == "exitquitplzohio":
-        print("Goodbye!")
+        input("Click enter to exit.")
         break
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     full_msg = f"[{timestamp}] {username}: {msg}"
     sock.sendto(full_msg.encode(), (BROADCAST_IP, PORT))
+
